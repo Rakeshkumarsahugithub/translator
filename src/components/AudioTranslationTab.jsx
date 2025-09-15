@@ -75,15 +75,15 @@ const AudioTranslationTab = ({
                 darkMode={darkMode}
               />
             </div>
-            <div className="flex space-x-2">
-              <label className="flex items-center space-x-2 text-sm">
+            <div className="flex items-center space-x-2">
+              <label className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
                 <input
                   type="checkbox"
                   checked={liveTranslation}
                   onChange={(e) => onLiveTranslationChange(e.target.checked)}
-                  className="rounded"
+                  className="rounded h-3 w-3 sm:h-4 sm:w-4"
                 />
-                <span>Live Translation</span>
+                <span className="whitespace-nowrap">Live</span>
               </label>
             </div>
           </div>
@@ -109,28 +109,29 @@ const AudioTranslationTab = ({
             }}
           />
           
-          <div className="flex items-center justify-between mt-4">
+          <div className="flex flex-wrap items-center justify-between gap-2 mt-4">
             <div className="flex space-x-2">
               <button
                 onClick={isListening ? onStopListening : onStartListening}
                 disabled={!isRecognitionSupported}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-300 ${
+                className={`flex items-center space-x-1 sm:space-x-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg font-medium transition-all duration-300 text-sm sm:text-base ${
                   isListening 
                     ? 'bg-red-600 text-white hover:bg-red-700' 
                     : 'bg-indigo-600 text-white hover:bg-indigo-700'
                 } disabled:opacity-50 disabled:cursor-not-allowed shadow-lg`}
               >
-                {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-                <span>{isListening ? 'Stop Recording' : 'Start Recording'}</span>
+                {isListening ? <MicOff className="w-4 h-4 sm:w-5 sm:h-5" /> : <Mic className="w-4 h-4 sm:w-5 sm:h-5" />}
+                <span className="whitespace-nowrap">{isListening ? 'Stop' : 'Record'}</span>
               </button>
               
               {inputText && (
                 <button
                   onClick={() => onSpeakText(inputText, inputLanguage)}
                   disabled={isSpeaking}
-                  className="flex items-center space-x-2 px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                  className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                  title="Speak"
                 >
-                  <Volume2 className="w-5 h-5" />
+                  <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
               )}
             </div>
@@ -158,14 +159,14 @@ const AudioTranslationTab = ({
             <button
               onClick={onTranslate}
               disabled={!inputText.trim() || isTranslating}
-              className="flex items-center space-x-2 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50"
+              className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-6 py-1.5 sm:py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 text-sm sm:text-base"
             >
               {isTranslating ? (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <div className="w-3 h-3 sm:w-4 sm:h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
               ) : (
-                <Languages className="w-4 h-4" />
+                <Languages className="w-3 h-3 sm:w-4 sm:h-4" />
               )}
-              <span>Translate</span>
+              <span className="whitespace-nowrap">Translate</span>
             </button>
           </div>
           
@@ -192,34 +193,31 @@ const AudioTranslationTab = ({
           </div>
           
           {translatedText && translatedText.trim() && translatedText !== "Translation will appear here..." && (
-            <div className="flex space-x-2 mt-4">
+            <div className="flex flex-wrap gap-2 mt-4">
               <button
                 onClick={() => onSpeakText(translatedText, outputLanguage)}
                 disabled={isSpeaking}
-                className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
+                className="flex items-center space-x-1 sm:space-x-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 text-sm"
+                title="Speak"
               >
-                {isSpeaking ? (
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                ) : (
-                  <Volume2 className="w-4 h-4" />
-                )}
-                <span>{isSpeaking ? 'Speaking...' : 'Speak'}</span>
+                <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="sm:inline hidden">Speak</span>
               </button>
-              
               <button
-                onClick={() => onCopyText(getDisplayText(translatedText, outputLanguage, outputRomanized))}
-                className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                onClick={() => onCopyText(translatedText)}
+                className="flex items-center space-x-1 sm:space-x-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                title="Copy"
               >
-                <Copy className="w-4 h-4" />
-                <span>Copy</span>
+                <Copy className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="sm:inline hidden">Copy</span>
               </button>
-              
               <button
-                onClick={() => onExportText(getDisplayText(translatedText, outputLanguage, outputRomanized))}
-                className="flex items-center space-x-2 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+                onClick={() => onExportText(translatedText)}
+                className="flex items-center space-x-1 sm:space-x-2 px-3 py-1.5 sm:px-4 sm:py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                title="Export"
               >
-                <Download className="w-4 h-4" />
-                <span>Export</span>
+                <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                <span className="sm:inline hidden">Export</span>
               </button>
             </div>
           )}
